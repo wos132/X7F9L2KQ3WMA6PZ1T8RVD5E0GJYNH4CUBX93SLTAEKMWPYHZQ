@@ -4,33 +4,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Przyciskowa aplikacja</title>
-  <meta name="theme-color" content="#000000"> <!-- Kolor paska statusu na urządzeniach -->
-  <link rel="apple-touch-icon" href="icon.png"> <!-- Ikona na ekranie głównym (jeśli masz plik icon.png) -->
-  <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Umożliwia tryb pełnoekranowy -->
-  <meta name="mobile-web-app-capable" content="yes"> <!-- Umożliwia tryb pełnoekranowy -->
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      margin-top: 50px;
       padding: 0;
       margin: 0;
-      height: 100%;
+      height: 100vh;
+      background: url('img1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
     }
+
+    /* Półprzezroczysta warstwa tła */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255, 255, 255, 0.5); /* biały filtr z przezroczystością */
+      z-index: 0;
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin-top: 50px;
+    }
+
     button {
       padding: 20px 40px;
-      font-size: 18px;
+      font-size: 20px;
       cursor: pointer;
-      margin: 10px;
-      width: 200px;
-      height: 60px;
+      margin: 15px;
+      width: 280px;
+      height: 70px;
       border: none;
       background-color: #4CAF50;
       color: white;
-      border-radius: 5px;
+      border-radius: 8px;
+      z-index: 1;
+      position: relative;
     }
+
     button:hover {
       background-color: #45a049;
+    }
+
+    div {
+      z-index: 1;
+      position: relative;
     }
   </style>
 </head>
@@ -41,14 +67,12 @@
   <div>
     <button id="btn1">Brama</button>
     <button id="btn2">Garaż</button>
-    <button id="btn3">Brama/Garaż</button>
-    <button id="btn4">Brama*</button>
+    <button id="btn3">Brama i Garaż</button>
   </div>
 
   <script>
-    // Przykład działania przycisków - wysyłanie zapytań GET
     document.getElementById('btn1').addEventListener('click', function() {
-      fetch('https://www.google.com')
+      fetch('https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&v7=1')
         .then(response => response.text())
         .then(data => {
           console.log('Odpowiedź dla przycisku 1:', data);
@@ -56,7 +80,7 @@
     });
 
     document.getElementById('btn2').addEventListener('click', function() {
-      fetch('https://www.google.com')
+      fetch('https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&v8=1')
         .then(response => response.text())
         .then(data => {
           console.log('Odpowiedź dla przycisku 2:', data);
@@ -64,18 +88,10 @@
     });
 
     document.getElementById('btn3').addEventListener('click', function() {
-      fetch('https://www.google.com')
+      fetch('https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&v2=1')
         .then(response => response.text())
         .then(data => {
           console.log('Odpowiedź dla przycisku 3:', data);
-        });
-    });
-
-    document.getElementById('btn4').addEventListener('click', function() {
-      fetch('https://www.google.com')
-        .then(response => response.text())
-        .then(data => {
-          console.log('Odpowiedź dla przycisku 4:', data);
         });
     });
   </script>
