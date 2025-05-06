@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Przyciskowa aplikacja</title>
-  <meta name="theme-color" content="#000000">
-  <link rel="apple-touch-icon" href="icon.jpg">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Brama SGS</title>
+  <meta name="theme-color" content="#000000"/>
+  <link rel="apple-touch-icon" href="icon.jpg"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -20,12 +20,11 @@
       position: relative;
     }
 
-    /* Półprzezroczysta warstwa tła */
     body::before {
       content: "";
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(255, 255, 255, 0.5); /* biały filtr z przezroczystością */
+      background: rgba(255, 255, 255, 0.5);
       z-index: 0;
     }
 
@@ -33,25 +32,33 @@
       position: relative;
       z-index: 1;
       margin-top: 50px;
+      color: white;
     }
 
     button {
-      padding: 20px 40px;
-      font-size: 20px;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
       cursor: pointer;
-      margin: 15px;
-      width: 280px;
-      height: 70px;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
+      margin: 10px;
+      width: 260px;
+      height: 60px;
+      background-color: rgba(255, 255, 255, 0.3);
+      color: black;
       border-radius: 8px;
       z-index: 1;
       position: relative;
+      backdrop-filter: blur(4px);
     }
 
+    #btn1 { border: 3px solid #4CAF50; }
+    #btn2 { border: 3px solid #2196F3; }
+    #btn3 { border: 3px solid #f44336; }
+    #btn5 { border: 3px solid #FFC107; }
+    #btn10 { border: 3px solid #FF9800; }
+
     button:hover {
-      background-color: #45a049;
+      background-color: rgba(255, 255, 255, 0.5);
     }
 
     div {
@@ -62,38 +69,82 @@
 </head>
 <body>
 
-  <h1>Dzień Dobry</h1>
+  <h1 id="status">Dzień Dobry</h1>
 
   <div>
     <button id="btn1">Brama</button>
     <button id="btn2">Garaż</button>
     <button id="btn3">Brama i Garaż</button>
+    <br>
+    <button id="btn5">Otwórz na 5s</button>
+    <button id="btn10">Otwórz na 10s</button>
   </div>
 
   <script>
+    function sendBlynkRequest(pin, value) {
+      return fetch(`https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&${pin}=${value}`)
+        .then(response => response.text());
+    }
+
+    function showMessage(text, duration) {
+      const status = document.getElementById('status');
+      const original = status.textContent;
+      status.textContent = text;
+      setTimeout(() => {
+        status.textContent = original;
+      }, duration);
+    }
+
     document.getElementById('btn1').addEventListener('click', function() {
-      fetch('https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&v7=1')
-        .then(response => response.text())
-        .then(data => {
-          console.log('Odpowiedź dla przycisku 1:', data);
-        });
+      showMessage("Wysyłam polecenie HTTP", 1000);
+      sendBlynkRequest('v7', 1).then(data => console.log('Brama:', data));
     });
 
     document.getElementById('btn2').addEventListener('click', function() {
-      fetch('https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&v8=1')
-        .then(response => response.text())
-        .then(data => {
-          console.log('Odpowiedź dla przycisku 2:', data);
-        });
+      showMessage("Wysyłam polecenie HTTP", 1000);
+      sendBlynkRequest('v8', 1).then(data => console.log('Garaż:', data));
     });
 
     document.getElementById('btn3').addEventListener('click', function() {
-      fetch('https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&v2=1')
-        .then(response => response.text())
-        .then(data => {
-          console.log('Odpowiedź dla przycisku 3:', data);
-        });
+      showMessage("Wysyłam polecenie HTTP", 1000);
+      sendBlynkRequest('v2', 1).then(data => console.log('Brama i Garaż:', data));
     });
+
+    document.getElementById('btn5').addEventListener('click', async function () {
+      showMessage("Polecenie w toku", 10000);
+      const button = this;
+      button.disabled = true;
+
+      await sendBlynkRequest('v7', 1);
+      await delay(5000);
+
+      await sendBlynkRequest('v7', 1);
+      await delay(5000);
+
+      await sendBlynkRequest('v7', 1);
+
+      button.disabled = false;
+    });
+
+    document.getElementById('btn10').addEventListener('click', async function () {
+      showMessage("Polecenie w toku", 10000);
+      const button = this;
+      button.disabled = true;
+
+      await sendBlynkRequest('v7', 1);
+      await delay(5000);
+
+      await sendBlynkRequest('v7', 1);
+      await delay(10000);
+
+      await sendBlynkRequest('v7', 1);
+
+      button.disabled = false;
+    });
+
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
   </script>
 
 </body>
