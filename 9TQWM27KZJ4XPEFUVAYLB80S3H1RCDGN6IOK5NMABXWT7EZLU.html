@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Przyciskowa aplikacja</title>
+  <meta name="theme-color" content="#000000"> <!-- Kolor paska statusu na urządzeniach -->
+  <link rel="apple-touch-icon" href="icon.png"> <!-- Ikona na ekranie głównym (jeśli masz plik icon.png) -->
+  <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Umożliwia tryb pełnoekranowy -->
+  <meta name="mobile-web-app-capable" content="yes"> <!-- Umożliwia tryb pełnoekranowy -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      padding: 0;
+      margin: 0;
+      height: 100%;
+    }
+    button {
+      padding: 20px 40px;
+      font-size: 18px;
+      cursor: pointer;
+      margin: 10px;
+      width: 200px;
+      height: 60px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Dzień Dobry</h1>
+
+  <div>
+    <button id="btn1">Brama</button>
+    <button id="btn2">Garaż</button>
+    <button id="btn3">Brama/Garaż</button>
+    <button id="btn4">Brama*</button>
+  </div>
+
+  <script>
+    // Przykład działania przycisków - wysyłanie zapytań GET
+    document.getElementById('btn1').addEventListener('click', function() {
+      fetch('https://www.google.com')
+        .then(response => response.text())
+        .then(data => {
+          console.log('Odpowiedź dla przycisku 1:', data);
+        });
+    });
+
+    document.getElementById('btn2').addEventListener('click', function() {
+      fetch('https://www.google.com')
+        .then(response => response.text())
+        .then(data => {
+          console.log('Odpowiedź dla przycisku 2:', data);
+        });
+    });
+
+    document.getElementById('btn3').addEventListener('click', function() {
+      fetch('https://www.google.com')
+        .then(response => response.text())
+        .then(data => {
+          console.log('Odpowiedź dla przycisku 3:', data);
+        });
+    });
+
+    document.getElementById('btn4').addEventListener('click', function() {
+      fetch('https://www.google.com')
+        .then(response => response.text())
+        .then(data => {
+          console.log('Odpowiedź dla przycisku 4:', data);
+        });
+    });
+  </script>
+
+</body>
+</html>
