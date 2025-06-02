@@ -8,6 +8,7 @@
   <link rel="apple-touch-icon" href="icon.jpg"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="mobile-web-app-capable" content="yes"/>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -57,6 +58,34 @@
       z-index: 1;
       position: relative;
     }
+
+    /* Dodane style dla wersji i logo */
+    .version {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      color: white;
+      font-size: 14px;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 5px 10px;
+      border-radius: 6px;
+      z-index: 10;
+    }
+    
+    .logo {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      z-index: 10;
+    }
+
+    .logo img {
+      height: 80px;
+      width: auto;
+      border-radius: 6px;
+      background-color: rgba(255, 255, 255, 0.3);
+      padding: 3px;
+    }
   </style>
 </head>
 <body>
@@ -67,6 +96,11 @@
     <button id="btn1">Brama</button>
     <button id="btn2">Garaż</button>
     <button id="btn3">Brama i Garaż</button>
+  </div>
+
+  <div class="version">Wersja: 1.2I</div>
+  <div class="logo">
+    <img src="ElektronikEle_preview_rev_1.png" alt="Logo">
   </div>
 
   <script>
