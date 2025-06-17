@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SmartGateOS</title>
+  <!-- Ikona aplikacji -->
+  <link rel="icon" type="image/jpeg" href="Icon.jpg" />
+
   <style>
     body {
       margin: 0;
@@ -89,75 +92,41 @@
       color: #ffb6ff;
       border-color: #ffb6ff;
     } 
-	.logo {
-  height: 40px;
-  margin: 5px auto;
-  display: block;
-}
+
+    .logo {
+      height: 40px;
+      margin: 5px auto;
+      display: block;
+    }
 
   </style>
 </head>
 <body>
   <header>
-  <div class="status-bar">
-    <div></div>
-    <div></div>
+    <div class="status-bar">
+      <div></div>
+      <div></div>
+    </div>
+
+    <!-- LOGO NA ŚRODKU -->
+    <div style="text-align: center;">
+      
+    </div>
+
+    <!-- RESZTA LEWO JAK WCZEŚNIEJ -->
+    <div class="title" style="text-align: left; margin-left: 10px;">
+      SmartGateOS <span class="dot"></span>
+    </div>
+    <div style="text-align: left; margin-left: 10px;">Wi-Fi dostępne</div>
+  </header>
+
+  <div class="buttons">
+    <button class="btn brama" onclick="handleClick(this, 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V7=1')">Brama</button>
+    <button class="btn garaz" onclick="handleClick(this, 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V8=1')">Garaż</button>
+    <button class="btn wszystko" onclick="handleClickWszystko(this)">Wszystko</button>
   </div>
 
-  <!-- LOGO NA ŚRODKU -->
-
-
-  <!-- RESZTA LEWO JAK WCZEŚNIEJ -->
-  <div class="title" style="text-align: left; margin-left: 10px;">
-    SmartGateOS <span class="dot"></span>
-  </div>
-  <div style="text-align: left; margin-left: 10px;">Wi-Fi dostępne</div>
-</header>
-
-
- <div class="buttons">
-  <button class="btn brama" onclick="handleClick(this, 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V7=1')">Brama</button>
-  <button class="btn garaz" onclick="handleClick(this, 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V8=1')">Garaż</button>
-  <button class="btn wszystko" onclick="handleClickWszystko(this)">Wszystko</button>
-</div>
-
-<script>
-  function handleClick(button, url) {
-    fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        console.log('Request successful:', url);
-      })
-      .catch(error => {
-        console.error('Fetch error:', error);
-      });
-  }
-
-  function handleClickWszystko(button) {
-    // Najpierw wykonaj V8=1
-    const urlV8 = 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V8=1';
-    const urlV7 = 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V7=1';
-
-    fetch(urlV8)
-      .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
-        console.log('V8 activated');
-        // Po 1,5s wykonaj V7=1
-        setTimeout(() => {
-          fetch(urlV7)
-            .then(resp => {
-              if (!resp.ok) throw new Error('Network response was not ok');
-              console.log('V7 activated after 1.5s');
-            })
-            .catch(err => console.error('Fetch error V7:', err));
-        }, 1500);
-      })
-      .catch(error => {
-        console.error('Fetch error V8:', error);
-      });
-  }
+  <script>
     function handleClick(button, url) {
       const originalText = button.textContent;
       const originalColor = button.style.color;
@@ -185,6 +154,49 @@
         button.style.backgroundColor = "transparent";
         button.style.color = originalColor;
       }, 1000);
+    }
+
+    function handleClickWszystko(button) {
+      const originalText = button.textContent;
+      const originalColor = button.style.color;
+      const borderColor = window.getComputedStyle(button).borderColor;
+
+      // Zmień tekst, tło i kolor tekstu
+      button.textContent = "Wysyłam polecenie HTTP…";
+      button.style.backgroundColor = borderColor;
+      button.style.color = "black";
+
+      // Najpierw wykonaj V8=1
+      const urlV8 = 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V8=1';
+      const urlV7 = 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V7=1';
+
+      fetch(urlV8)
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          console.log('V8 activated');
+          // Po 1,5s wykonaj V7=1
+          setTimeout(() => {
+            fetch(urlV7)
+              .then(resp => {
+                if (!resp.ok) throw new Error('Network response was not ok');
+                console.log('V7 activated after 1.5s');
+              })
+              .catch(err => console.error('Fetch error V7:', err));
+            // Po zakończeniu przywróć wygląd przycisku
+            setTimeout(() => {
+              button.textContent = originalText;
+              button.style.backgroundColor = "transparent";
+              button.style.color = originalColor;
+            }, 500);
+          }, 1500);
+        })
+        .catch(error => {
+          console.error('Fetch error V8:', error);
+          // Jeśli błąd, to też przywróć wygląd
+          button.textContent = originalText;
+          button.style.backgroundColor = "transparent";
+          button.style.color = originalColor;
+        });
     }
   </script>
 </body>
