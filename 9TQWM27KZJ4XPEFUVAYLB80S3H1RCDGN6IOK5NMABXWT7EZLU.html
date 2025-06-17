@@ -1,174 +1,193 @@
-<!DOCTYPE html>More actions
+<!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Brama SGS</title>
-  <meta name="theme-color" content="#000000"/>
-  <link rel="apple-touch-icon" href="Icon.jpg"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="mobile-web-app-capable" content="yes"/>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartGateOS</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 0;
       margin: 0;
-      height: 100vh;
-      background: url('img1.jpg') no-repeat center center fixed;
-      background-size: cover;
-      position: relative;
+      font-family: Arial, sans-serif;
+      background-color: #1D1E22;
+      color: white;
+      text-align: center;
     }
 
-    h1 {
+    header {
+      background-color: #49687c;
+      padding: 10px;
       position: relative;
-      z-index: 1;
-      margin-top: 50px;
+      text-align: left;
       color: white;
     }
 
-    button {
-      padding: 15px 30px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      margin: 10px;
-      width: 260px;
-      height: 60px;
-      background-color: rgba(255, 255, 255, 0.3);
-      color: black;
-      border-radius: 8px;
-      z-index: 1;
-      position: relative;
-      backdrop-filter: blur(4px);
-    }
-
-    #btn1 { border: 3px solid #4CAF50; }
-    #btn2 { border: 3px solid #2196F3; }
-    #btn3 { border: 3px solid #f44336; }
-    #btn5 { border: 3px solid #FFC107; }
-    #btn10 { border: 3px solid #FF9800; }
-
-    button:hover {
-      background-color: rgba(255, 255, 255, 0.5);
-    }
-
-    div {
-      z-index: 1;
-      position: relative;
-    }
-
-    /* Dodane style dla wersji i logo */
-    .version {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      color: white;
-      font-size: 14px;
-      background-color: rgba(0, 0, 0, 0.4);
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
       padding: 5px 10px;
-      border-radius: 6px;
-      z-index: 10;
+      font-size: 14px;
     }
 
-    .logo {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      z-index: 10;
+    .header-icons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
     }
 
-    .logo img {
-      height: 80px;
-      width: auto;
-      border-radius: 6px;
-      background-color: rgba(255, 255, 255, 0.3);
-      padding: 3px;
+    .dot {
+      height: 10px;
+      width: 10px;
+      background-color: #3fcf57;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 5px;
     }
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 75px;
+      margin-top: 60px;
+    }
+
+    .btn {
+      width: 80%;
+      padding: 25px;
+      font-size: 30px;
+      border-radius: 40px;
+      background-color: transparent;
+      border: 3px solid;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    .brama {
+      color: red;
+      border-color: red;
+    }
+
+    .garaz {
+      color: gold;
+      border-color: gold;
+    }
+
+    .wszystko {
+      color: #ffb6ff;
+      border-color: #ffb6ff;
+    } 
+	.logo {
+  height: 40px;
+  margin: 5px auto;
+  display: block;
+}
+
   </style>
 </head>
 <body>
-
-  <h1 id="status">Dzień Dobry</h1>
-
-  <div>
-    <button id="btn1">Brama</button>
-    <button id="btn2">Garaż</button>
-    <button id="btn3">Brama i Garaż</button>
+  <header>
+  <div class="status-bar">
+    <div></div>
+    <div></div>
   </div>
 
-  <div class="version">Wersja: 1.2(Beta)</div>
-  <div class="logo">
-    <img src="ElektronikEle_preview_rev_1.png" alt="Logo">
+  <!-- LOGO NA ŚRODKU -->
+  <div style="text-align: center;">
+    <img src="ElektronikEle_preview_rev_1.png" alt="Logo" class="logo" />
   </div>
 
-  <script>
-    function sendBlynkRequest(pin, value) {
-      return fetch(`https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&${pin}=${value}`)
-        .then(response => response.text());
-    }
+  <!-- RESZTA LEWO JAK WCZEŚNIEJ -->
+  <div class="title" style="text-align: left; margin-left: 10px;">
+    SmartGateOS <span class="dot"></span>
+  </div>
+  <div style="text-align: left; margin-left: 10px;">Wi-Fi dostępne</div>
+</header>
 
-    function showMessage(text, duration) {
-      const status = document.getElementById('status');
-      const original = status.textContent;
-      status.textContent = text;
+
+ <div class="buttons">
+  <button class="btn brama" onclick="handleClick(this, 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V7=1')">Brama</button>
+  <button class="btn garaz" onclick="handleClick(this, 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V8=1')">Garaż</button>
+  <button class="btn wszystko" onclick="handleClickWszystko(this)">Wszystko</button>
+</div>
+
+<script>
+  function handleClick(button, url) {
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        console.log('Request successful:', url);
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+      });
+  }
+
+  function handleClickWszystko(button) {
+    // Najpierw wykonaj V8=1
+    const urlV8 = 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V8=1';
+    const urlV7 = 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V7=1';
+
+    fetch(urlV8)
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        console.log('V8 activated');
+        // Po 1,5s wykonaj V7=1
+        setTimeout(() => {
+          fetch(urlV7)
+            .then(resp => {
+              if (!resp.ok) throw new Error('Network response was not ok');
+              console.log('V7 activated after 1.5s');
+            })
+            .catch(err => console.error('Fetch error V7:', err));
+        }, 1500);
+      })
+      .catch(error => {
+        console.error('Fetch error V8:', error);
+      });
+  }
+    function handleClick(button, url) {
+      const originalText = button.textContent;
+      const originalColor = button.style.color;
+      const borderColor = window.getComputedStyle(button).borderColor;
+
+      // Zmień tekst, tło i kolor tekstu
+      button.textContent = "Wysyłam polecenie HTTP…";
+      button.style.backgroundColor = borderColor;
+      button.style.color = "black";
+
+      // Wyślij żądanie
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            console.error("Błąd żądania:", response.status);
+          }
+        })
+        .catch(error => {
+          console.error("Błąd:", error);
+        });
+
+      // Po 1 sekundzie przywróć wygląd
       setTimeout(() => {
-        status.textContent = original;
-      }, duration);
-    }
-
-    document.getElementById('btn1').addEventListener('click', function() {
-      showMessage("Wysyłam polecenie HTTP", 1000);
-      sendBlynkRequest('v7', 1).then(data => console.log('Brama:', data));
-    });
-
-    document.getElementById('btn2').addEventListener('click', function() {
-      showMessage("Wysyłam polecenie HTTP", 1000);
-      sendBlynkRequest('v8', 1).then(data => console.log('Garaż:', data));
-    });
-
-    document.getElementById('btn3').addEventListener('click', function() {
-      showMessage("Wysyłam polecenie HTTP", 1000);
-      sendBlynkRequest('v2', 1).then(data => console.log('Brama i Garaż:', data));
-    });
-
-    document.getElementById('btn5').addEventListener('click', async function () {
-      showMessage("Polecenie w toku", 10000);
-      const button = this;
-      button.disabled = true;
-
-      await sendBlynkRequest('v7', 1);
-      await delay(5000);
-
-      await sendBlynkRequest('v7', 1);
-      await delay(5000);
-
-      await sendBlynkRequest('v7', 1);
-
-      button.disabled = false;
-    });
-
-    document.getElementById('btn10').addEventListener('click', async function () {
-      showMessage("Polecenie w toku", 10000);
-      const button = this;
-      button.disabled = true;
-
-      await sendBlynkRequest('v7', 1);
-      await delay(5000);
-
-      await sendBlynkRequest('v7', 1);
-      await delay(10000);
-
-      await sendBlynkRequest('v7', 1);
-
-      button.disabled = false;
-    });
-
-    function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
+        button.textContent = originalText;
+        button.style.backgroundColor = "transparent";
+        button.style.color = originalColor;
+      }, 1000);
     }
   </script>
-
 </body>
 </html>
