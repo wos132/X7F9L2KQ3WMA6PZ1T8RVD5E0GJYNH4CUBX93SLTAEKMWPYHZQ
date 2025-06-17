@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Status Wemosa z powiadomieniem</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1D1E22;
+      color: white;
+      text-align: center;
+      padding-top: 50px;
+    }
+    .status {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .dot {
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 10px;
+      background-color: grey;
+    }
+    .online {
+      background-color: #3fcf57;
+    }
+    .offline {
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+	<button onclick="history.back()" style="font-size: 24px; background: none; border: none; cursor: pointer;">🔙</button>
+  <div class="status">
+    Status Wemosa: <span id="status-text">Ładowanie...</span>
+    <span id="status-dot" class="dot"></span>
+  </div>
+
+  <script>
+    const token = 'xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u';
+    const pin = 'V0';
+    const url = `https://fra1.blynk.cloud/external/api/get?token=${token}&${pin}`;
+
+    const statusText = document.getElementById('status-text');
+    const statusDot = document.getElementById('status-dot');
+
+    // Funkcja wyświetlająca powiadomienie w przeglądarce
+    function notifyUser(message) {
+      if (!("Notification" in window)) {
+        alert("Twoja przeglądarka nie wspiera powiadomień.");
+        return;
+      }
+      if (Notification.permission === "granted") {
+        new Notification(message);
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            new Notification(message);
+          }
+        });
+      }
+    }
+
+    let wasOffline = false;
+
+    function checkStatus() {
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error('Brak odpowiedzi');
+          return response.text();
+        })
+        .then(data => {
+          statusText.textContent = 'Online';
+          statusDot.classList.remove('offline');
+          statusDot.classList.add('online');
+          if (wasOffline) {
+            notifyUser('Wemos ponownie online');
+            wasOffline = false;
+          }
+          console.log('Odpowiedź z Blynk:', data);
+        })
+        .catch(error => {
+          statusText.textContent = 'Offline';
+          statusDot.classList.remove('online');
+          statusDot.classList.add('offline');
+          console.error('Błąd połączenia:', error);
+
+          if (!wasOffline) {
+            notifyUser('Uwaga! Wemos jest offline (rozłączony z WiFi)');
+            wasOffline = true;
+          }
+        });
+    }
+
+    checkStatus();
+    setInterval(checkStatus, 1000);
+  </script>
+
+</body>
+</html>
