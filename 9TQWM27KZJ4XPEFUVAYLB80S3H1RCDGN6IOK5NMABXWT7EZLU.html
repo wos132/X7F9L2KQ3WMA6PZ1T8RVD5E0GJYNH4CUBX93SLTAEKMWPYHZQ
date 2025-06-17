@@ -94,10 +94,42 @@
       border-color: #ffb6ff;
     } 
 
+	.version {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      color: white;
+      font-size: 14px;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 5px 10px;
+      border-radius: 6px;
+      z-index: 10;
+    }
+
     .logo {
-      height: 40px;
-      margin: 5px auto;
-      display: block;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  z-index: 10;
+  display: block; /* Teraz będzie widoczne */
+}
+
+
+    .logo img {
+      height: 80px;
+      width: auto;
+      border-radius: 6px;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 3px;
+    }
+	
+	 #logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 80vw;
+      max-height: 80vh;
     }
 
   </style>
@@ -116,9 +148,9 @@
 
     <!-- RESZTA LEWO JAK WCZEŚNIEJ -->
     <div class="title" style="text-align: left; margin-left: 10px;">
-      SmartGateOS <span class="dot"></span>
+		SGS <a href="wiadomosc.html" style="text-decoration: none; color: inherit; cursor: pointer;">⚙️</a>
     </div>
-    <div style="text-align: left; margin-left: 10px;">Wi-Fi dostępne</div>
+    <div style="text-align: left; margin-left: 10px;">SmartGateSystem</div>
   </header>
 
   <div class="buttons">
@@ -126,7 +158,10 @@
     <button class="btn garaz" onclick="handleClick(this, 'https://fra1.blynk.cloud/external/api/update?token=xe3c5ha8FWig5W-nL9ULmIphEo_9lq8u&V8=1')">Garaż</button>
     <button class="btn wszystko" onclick="handleClickWszystko(this)">Wszystko</button>
   </div>
-
+	<div class="version">Wersja: 1.3a (Beta)</div>
+	<div class="logo">
+		<img src="ElektronikEle_preview_rev_1.png" alt="Logo">
+	</div>
   <script>
     function handleClick(button, url) {
       const originalText = button.textContent;
